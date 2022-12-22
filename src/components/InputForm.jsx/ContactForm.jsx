@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
+import PropTypes from 'prop-types';
 import { Button } from 'components/Button/Button';
 import {
   ContactFormStyled,
@@ -7,6 +8,10 @@ import {
 } from 'components/InputForm.jsx/ContactForm.styled';
 
 export class ContactForm extends Component {
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+  };
+
   state = {
     contacts: [],
     name: '',
