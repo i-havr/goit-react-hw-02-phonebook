@@ -1,69 +1,57 @@
 import React from 'react';
-import { nanoid } from 'nanoid';
+import { ContactForm } from 'components/InputForm.jsx/ContactForm';
 import { Section } from 'components/Section/Section';
-import { InputForm } from 'components/InputForm.jsx/InputForm';
 import { AppStyled } from './App.styled';
-
-console.log(nanoid(10));
+import { ContactsList } from 'components/ContactsList/ContactsList';
+import { Filter } from 'components/Filter/Filter';
 
 export class App extends React.Component {
-  //   static defaultProps = { initialValue: 0 };
-  //   static propTypes = {};
-
   state = {
     contacts: [],
-    name: '',
-    number: '',
+    filter: '',
   };
 
-  addContact = event => {
-    event.preventDefault();
-    console.log(event.target.value);
-
-    this.setState(prevState => {
-      prevState.contacts.push(event.target.textContent);
-    });
+  addContact = data => {
+    this.state.contacts.some(contact => contact.name === data[0].name)
+      ? alert(`${data[0].name} is already in contacts.`)
+      : this.setState(({ contacts }) => ({ contacts: [...contacts, ...data] }));
   };
 
-  // valueIncrement = option => {
-  //   this.setState(prevState => ({
-  //     [option]: prevState[option] + 1,
-  //   }));
-  // };
+  filterChange = event => {
+    this.setState({ filter: event.currentTarget.value });
+  };
 
-  // countTotalFeedback = () => {
-  //   return this.state.good + this.state.neutral + this.state.bad;
-  // };
+  getVisibleContacts = () => {
+    const { contacts, filter } = this.state;
+    const normalizedFilter = filter.toLowerCase();
 
-  // countPositiveFeedbackPercentage = () => {
-  //   return Math.round((this.state.good / this.countTotalFeedback()) * 100);
-  // };
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(normalizedFilter)
+    );
+  };
+
+  deleteContact = contactId => {
+    this.setState(({ contacts }) => ({
+      contacts: contacts.filter(({ id }) => id !== contactId),
+    }));
+  };
 
   render() {
-    // const { good, neutral, bad } = this.state;
-    // const options = Object.keys(this.state);
+    const { filter } = this.state;
+    const visibleContacts = this.getVisibleContacts();
+
     return (
       <AppStyled>
-        <Section title="Phonebook">
-          <InputForm actionHandler={this.addContact} />
-        </Section>
-        <Section title="Contacts"></Section>
-        {/* <Section title="Please leave feedback">
-          <FeedbackOptions
-            options={options}
-            onLeaveFeedback={this.valueIncrement}
-          />
-        </Section>
+        <h1>Phonebook</h1>
+        <ContactForm onSubmit={this.addContact} />
 
-        <Section title="Statistics">
-          <Statistics
-            good={good}
-            neutral={neutral}
-            bad={bad}
-            total={this.countTotalFeedback()}
-            positivePercentage={this.countPositiveFeedbackPercentage() || 0}
-          />
-        </Section> */}
+        <Section title="Contacts">
+          <Filter filter={filter} onChange={this.filterChange} />
+          <ContactsList
+            contacts={visibleContacts}
+            onDeleteButton={this.deleteContact}
+          ></ContactsList>
+        </Section>
       </AppStyled>
     );
   }

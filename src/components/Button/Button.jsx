@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import { StyledButton } from './Button.styled';
 
@@ -10,8 +10,8 @@ export const Button = ({ type = 'submit', children, actionHandler }) => {
   );
 };
 
-// Button.propTypes = {
-//   type: PropTypes.string,
-//   children: PropTypes.string.isRequired,
-//   actionHandler: PropTypes.func.isRequired,
-// };
+Button.propTypes = {
+  type: PropTypes.string,
+  children: PropTypes.string.isRequired,
+  actionHandler: PropTypes.func,
+};

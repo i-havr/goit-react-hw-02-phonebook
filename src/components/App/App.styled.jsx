@@ -7,11 +7,11 @@ export const AppStyled = styled.div`
   align-items: center;
   min-width: 120px;
   max-width: 250px;
-  height: 350px;
+  min-height: 250px;
   margin: 40px;
   padding: 40px;
   /* padding-bottom: 40px; */
   border-radius: 12px;
   box-shadow: 2px 2px 22px #c1c1c1;
-  color: blue;
+  /* color: blue; */
 `;
