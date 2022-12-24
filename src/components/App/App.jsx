@@ -1,5 +1,6 @@
 import React from 'react';
-import { ContactForm } from 'components/InputForm.jsx/ContactForm';
+import { nanoid } from 'nanoid';
+import { ContactForm } from 'components/ContactForm.jsx/ContactForm';
 import { Section } from 'components/Section/Section';
 import { AppStyled } from './App.styled';
 import { ContactsList } from 'components/ContactsList/ContactsList';
@@ -11,10 +12,17 @@ export class App extends React.Component {
     filter: '',
   };
 
-  addContact = data => {
-    this.state.contacts.some(contact => contact.name === data[0].name)
-      ? alert(`${data[0].name} is already in contacts.`)
-      : this.setState(({ contacts }) => ({ contacts: [...contacts, ...data] }));
+  addContact = ({ name, number }, resetForm) => {
+    const newContact = { id: nanoid(5), name, number };
+
+    if (this.state.contacts.some(contact => contact.name === name)) {
+      alert(`${name} is already in contacts.`);
+    } else {
+      this.setState(({ contacts }) => ({
+        contacts: [...contacts, newContact],
+      }));
+      resetForm();
+    }
   };
 
   filterChange = event => {
@@ -47,6 +55,7 @@ export class App extends React.Component {
 
         <Section title="Contacts">
           <Filter filter={filter} onChange={this.filterChange} />
+
           <ContactsList
             contacts={visibleContacts}
             onDeleteButton={this.deleteContact}

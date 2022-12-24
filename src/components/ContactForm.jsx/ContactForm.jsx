@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import { Button } from 'components/Button/Button';
 import {
   ContactFormStyled,
   LabelInputStyled,
-} from 'components/InputForm.jsx/ContactForm.styled';
+} from 'components/ContactForm.jsx/ContactForm.styled';
 
 export class ContactForm extends Component {
   static propTypes = {
@@ -13,7 +12,6 @@ export class ContactForm extends Component {
   };
 
   state = {
-    contacts: [],
     name: '',
     number: '',
   };
@@ -24,16 +22,11 @@ export class ContactForm extends Component {
     this.setState({
       [name]: value,
     });
-
-    this.setState(({ name, number }) => ({
-      contacts: [{ id: nanoid(5), name: name, number: number }],
-    }));
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.onSubmit(this.state.contacts);
-    this.resetForm();
+    this.props.onSubmit(this.state, this.resetForm);
   };
 
   resetForm = () => {

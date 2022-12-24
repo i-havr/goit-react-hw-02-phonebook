@@ -1,24 +1,19 @@
 import PropTypes from 'prop-types';
-import { ButtonDelete } from 'components/Button/ButtonDelete';
-import {
-  ContactsListStyled,
-  MarkerStyled,
-  ItemListStyled,
-} from './ContactsList.styled';
+import { ContactsListStyled } from './ContactsList.styled';
+import { ContactsListItem } from 'components/ContactsListItem/ContactsListItem';
 
 export const ContactsList = ({ contacts, onDeleteButton }) => {
   return (
     <ContactsListStyled>
       {contacts.map(({ id, name, number }) => {
         return (
-          <MarkerStyled key={id}>
-            <ItemListStyled>
-              {`${name}: ${number}`}
-              <ButtonDelete actionHandler={() => onDeleteButton(id)}>
-                X
-              </ButtonDelete>
-            </ItemListStyled>
-          </MarkerStyled>
+          <ContactsListItem
+            key={id}
+            id={id}
+            name={name}
+            number={number}
+            onDeleteButton={onDeleteButton}
+          ></ContactsListItem>
         );
       })}
     </ContactsListStyled>
